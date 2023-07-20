@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+        <div class="search-container">
+            <h1 class="title">Instagram Tag Search</h1>
+            <form class="tag-form" method="POST" action="/instagram">
+                <input class="input-text" type="text" name="tag" placeholder="Type a Tag!"/>
+                <input class="reset-button-style submit-button fa" value="&#xf16d;" type="submit"/>
+            </form>
+        </div>
+    <style>
+        {{/* TODO: add some basic css - Make it pretty :-)  */}}
+        .search-container {
+            display: grid;
+            grid-template-columns: 10em 10em 10em 10em;
+            grid-template-rows: auto;
+            grid-template-areas:
+            ". title title ."
+            ". tagform tagform ."
+        }
+
+        .title {
+            grid-area: title;
+        }
+
+        .tag-form {
+            grid-area: tagform;
+            display: grid;
+            grid-template-columns: 15em 5em;
+            grid-template-rows: auto;
+            grid-template-areas:
+            "textinput submitbutton"
+        }
+
+        .input-text {
+            grid-area: textinput;
+        }
+
+        .submit-button {
+            grid-area: submitbutton;
+        }
+
+        .reset-button-style {
+            background-color: #7FFFD4;
+        }
+
+        .reset-button-style:hover {
+            background-color: #00b377;
+        }
+
+        h1 {
+            color: blue;
+            font-family: "Monaco", sans-serif;
+            font-size: 1.5em;
+        }
+    </style>
+</html>

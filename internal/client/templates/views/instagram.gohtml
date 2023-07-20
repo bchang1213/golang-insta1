@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    </head>
+    <div id="main-container">
+    </div>
+    <style>
+        {{/* TODO: add some basic css - Make it pretty :-)  */}}
+        .picture-list {
+            border: 1px black solid;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        //returns a data url
+        function getPic(url, callback) {
+            var eachImg = new Image();
+            eachImg.crossOrigin = "anonymous";
+            eachImg.src = url;
+            eachImg.addEventListener("load", function () {
+                var canvas = document.createElement("canvas");
+                canvas.width = eachImg.width;
+                canvas.height = eachImg.height;
+                var context = canvas.getContext("2d");
+                context.drawImage(eachImg,0,0);
+                var dataURL = canvas.toDataURL("image/jpeg");
+                callback(dataURL);
+            } , false);
+        };
+
+        {{/* TODO: Since extensions render from js(jQeury in our case), your challenge is to render this whole page in jQuery */}}
+        //Example:
+        var h = $("<h1>");
+        h.text({{.Data.Hashtag.Name}});
+        $("#main-container").append(h);
+
+        var json = {{.Data.Hashtag.EdgeHashtagToMedia.Edges}};
+        
+        var pictureList = $("<ul></ul>");
+        pictureList.attr("class", "picture-list");
+        $("#main-container").append(pictureList);
+
+        for (let i = 0; i < 6; i++) {
+            var eachPictureItem = $("<li></li>");
+            eachPictureItem.attr("class", "picture-item-" + i);
+            //Img Tag
+            var eachPictureURL = 'https://cors-anywhere.herokuapp.com/' + json[i].node.display_url;
+
+            getPic(eachPictureURL, (dataURL) => {
+                console.log("DataURL:", dataURL)
+                var imageTag = $("<img />");
+                imageTag.attr("src", dataURL)
+                eachPictureItem.append(imageTag);
+
+                //Caption P tag
+                var eachPictureCaption = $("<p></p>");
+                eachPictureCaption.text(json[i].node.edge_media_to_caption.edges[0].node.text);
+                eachPictureItem.append(eachPictureCaption);
+
+                pictureList.append(eachPictureItem);
+            })
+        }
+    </script>
+</html>
